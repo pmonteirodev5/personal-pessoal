@@ -1,0 +1,136 @@
+    <mat-toolbar>
+      <span style="display: block; margin-right: 10px">Personal personal</span>
+      <button mat-raised-button (click)="adicionarTarefa()">Adicionar tarefa</button>
+    </mat-toolbar>
+<div cdkDropListGroup style="clear: both">
+  <div class="example-container">
+    <h2>Inbox</h2>
+
+    <div
+    cdkDropList
+    #inbox="cdkDropList"
+    [cdkDropListData]="tasks"
+    [cdkDropListConnectedTo]="[nextList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)"
+    >
+      <div
+      *ngFor="let task of (tasks|async)"
+      cdkDrag
+      [cdkDragData]="task"
+      class="example-box"
+      >
+      <mat-card *ngIf="task.status == 'INBOX'">
+        <mat-card-title>{{task.title}}</mat-card-title>
+        <mat-card-subtitle>{{task.description}}</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            {{task.dueDate | date}}
+          </p>
+        </mat-card-content>
+        <mat-card-footer>{{task.status}}</mat-card-footer>
+      </mat-card>
+      </div>
+    </div>
+</div>
+  <div class="example-container">
+    <h2>Next</h2>
+    <div
+      cdkDropList
+      #nextList="cdkDropList"
+      [cdkDropListData]="next"
+      [cdkDropListConnectedTo]="[inbox]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div
+        *ngFor="let nextData of (next|async)"
+        cdkDrag
+        [cdkDragData]="nextData"
+        class="example-box"
+      >
+
+        <mat-card  *ngIf="nextData.status == 'NEXT'">
+          <mat-card-title>{{nextData.title}}</mat-card-title>
+          <mat-card-subtitle>{{nextData.description}}</mat-card-subtitle>
+          <mat-card-content>
+            <p>
+              {{nextData.dueDate | date}}
+            </p>
+          </mat-card-content>
+          <mat-card-footer>{{nextData.status}}</mat-card-footer>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<mat-grid-list cols="4" rowHeight="100px" >-->
+<!--  <mat-grid-tile colspan="4" rowspan="1" >-->
+
+<!--  </mat-grid-tile>-->
+<!--  <mat-grid-tile colspan="3">-->
+<!--    <div style="margin-right: 70px; ">-->
+<!--      <button mat-raised-button color="primary"-->
+<!--              matBadge="8" matBadgePosition="before" matBadgeColor="warn" style="width: 150px;">-->
+<!--        Inbox-->
+<!--      </button>-->
+<!--&lt;!&ndash;      <mat-list&ndash;&gt;-->
+<!--&lt;!&ndash;        style="display: flex; flex-flow: wrap; position: fixed"&ndash;&gt;-->
+<!--&lt;!&ndash;        cdkDropList&ndash;&gt;-->
+<!--&lt;!&ndash;        [cdkDropListData]="tasks"&ndash;&gt;-->
+<!--&lt;!&ndash;        (cdkDropListDropped)="drop($event)">&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-list-item *ngFor="let t of tasks" cdkDrag style=" margin-bottom: 10px;" >&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-card  *ngIf="t.status == 'INBOX'" style="display: flex; flex-flow: wrap; justify-items: first; width: 100px; margin-left: -5px;"&ndash;&gt;-->
+<!--&lt;!&ndash;                     class="list-item"&ndash;&gt;-->
+<!--&lt;!&ndash;                     >&ndash;&gt;-->
+<!--&lt;!&ndash;            <mat-card-content>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span   mat-line>{{t.title}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span    mat-line>{{t.description}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span    mat-line>{{t.dueDate}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </mat-card-content>&ndash;&gt;-->
+<!--&lt;!&ndash;          </mat-card>&ndash;&gt;-->
+<!--&lt;!&ndash;        </mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;      </mat-list>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div style="margin-right: 70px; ">&ndash;&gt;-->
+<!--&lt;!&ndash;      <button mat-raised-button color="primary"&ndash;&gt;-->
+<!--&lt;!&ndash;              matBadge="8" matBadgePosition="before" matBadgeColor="warn" style="width: 150px;">&ndash;&gt;-->
+<!--&lt;!&ndash;        Next actions&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      <mat-list&ndash;&gt;-->
+<!--&lt;!&ndash;        style="display: flex; flex-flow: wrap;"&ndash;&gt;-->
+<!--&lt;!&ndash;        cdkDropList&ndash;&gt;-->
+<!--&lt;!&ndash;        [cdkDropListData]="next"&ndash;&gt;-->
+<!--&lt;!&ndash;        (cdkDropListDropped)="drop($event)">&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-list-item *ngFor="let n of next" cdkDrag >&ndash;&gt;-->
+<!--&lt;!&ndash;          {{n|json}}&ndash;&gt;-->
+<!--&lt;!&ndash;        </mat-list-item>&ndash;&gt;-->
+<!--&lt;!&ndash;      </mat-list>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--    <p style="margin-right: 100px;">-->
+<!--    <button mat-raised-button color="primary"-->
+<!--            matBadge="8" matBadgePosition="before" matBadgeColor="accent">-->
+<!--      Medium Tasks-->
+<!--    </button>-->
+<!--  </p>-->
+<!--    <p style="margin-right: 100px;">-->
+<!--    <button mat-raised-button color="primary"-->
+<!--            matBadge="8" matBadgePosition="before" matBadgeColor="accent">-->
+<!--      Bigger tasks-->
+<!--    </button>-->
+<!--  </p>-->
+<!--    <p style="margin-right: 100px;">-->
+<!--      <button mat-raised-button color="primary"-->
+<!--              matBadge="8" matBadgePosition="before" matBadgeColor="accent">-->
+<!--        Doing-->
+<!--      </button>-->
+<!--    </p>-->
+<!--    <p style="margin-right: 100px;">-->
+<!--      <button mat-raised-button color="primary"-->
+<!--              matBadge="8" matBadgePosition="before" matBadgeColor="accent">-->
+<!--        Done-->
+<!--      </button>-->
+<!--    </p>-->
+<!--  </mat-grid-tile>-->
+<!--</mat-grid-list>-->
+
